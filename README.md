@@ -43,14 +43,6 @@ questions_python.js   the Python question bank (TOPIC_BANKS.python)
 
 The two question-bank files just populate a global `TOPIC_BANKS` object; `interview_prep.html` loads both via `<script src>` and picks whichever bank matches the language dropdown. All three files need to be deployed together — the HTML file alone won't have any questions to show.
 
-## Publishing on GitHub Pages
-
-1. Push this folder to a GitHub repo.
-2. In the repo's **Settings → Pages**, set the source to the branch/folder containing these three files (e.g. `main` / `/root`).
-3. GitHub will publish it at `https://<username>.github.io/<repo>/interview_prep.html`.
-
-No build step, no environment variables, nothing else to configure — it's static files.
-
 ## Adding new questions
 
 Each question is one object in the `topics` array inside `questions_cpp.js` or `questions_python.js`:
