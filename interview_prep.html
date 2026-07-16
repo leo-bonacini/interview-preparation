@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Robotics Interview Prep</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root {
+    --bg: #0f1117;
+    --panel: #161925;
+    --panel-2: #1d2130;
+    --border: #2a2f42;
+    --text: #e6e8f0;
+    --muted: #9a9fb5;
+    --accent: #5fb3ff;
+    --accent-2: #7ee8b8;
+    --bad: #ff6b6b;
+    --good: #7ee8b8;
+    --code-bg: #0b0d13;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f5f6fa;
+      --panel: #ffffff;
+      --panel-2: #f0f1f6;
+      --border: #dde0ea;
+      --text: #1b1e2b;
+      --muted: #5b5f75;
+      --accent: #1c6fd6;
+      --accent-2: #1c9a6c;
+      --bad: #d4373a;
+      --good: #1c9a6c;
+      --code-bg: #eef0f6;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    min-height: 100vh;
+  }
+  code, pre, textarea, .mono { font-family: "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; }
+
+  nav {
+    width: 240px;
+    flex-shrink: 0;
+    background: var(--panel);
+    border-right: 1px solid var(--border);
+    padding: 20px 12px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  nav h1 {
+    font-size: 15px;
+    margin: 0 8px 4px 8px;
+    color: var(--text);
+  }
+  nav .sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin: 0 8px 18px 8px;
+  }
+  nav a {
+    display: block;
+    padding: 8px 8px;
+    border-radius: 6px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    margin-bottom: 2px;
+  }
+  nav a:hover { background: var(--panel-2); color: var(--text); }
+  nav a .n { color: var(--accent); margin-right: 6px; font-variant-numeric: tabular-nums; }
+
+  main {
+    flex: 1;
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 32px 28px 100px 28px;
+  }
+  header.page {
+    margin-bottom: 36px;
+  }
+  header.page h1 { font-size: 26px; margin: 0 0 8px 0; }
+  header.page p { color: var(--muted); margin: 0; font-size: 14px; line-height: 1.6; }
+  header.page .note {
+    margin-top: 14px;
+    font-size: 12.5px;
+    padding: 10px 12px;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--muted);
+  }
+
+  .gate {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+    padding: 24px;
+  }
+  .gate-card {
+    width: 100%;
+    max-width: 420px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 26px;
+  }
+  .gate-card h1 { font-size: 22px; margin: 0 0 8px 0; }
+  .gate-card .sub {
+    color: var(--muted);
+    font-size: 13.5px;
+    line-height: 1.55;
+    margin: 0 0 22px 0;
+  }
+  .gate-card label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .gate-card input, .gate-card select {
+    font-family: inherit;
+    font-size: 14px;
+    border-radius: 7px;
+    border: 1px solid var(--border);
+    padding: 9px 11px;
+    background: var(--code-bg);
+    color: var(--text);
+  }
+  .gate-card button { width: 100%; margin-top: 4px; }
+  .seed-info {
+    font-size: 12.5px;
+    color: var(--muted);
+    margin-top: 14px;
+  }
+
+  section.topic {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 26px;
+    margin-bottom: 24px;
+    scroll-margin-top: 20px;
+  }
+  section.topic h2 {
+    font-size: 19px;
+    margin: 0 0 4px 0;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  section.topic h2 .idx { color: var(--accent); font-size: 14px; }
+  section.topic .tag {
+    display: inline-block;
+    font-size: 10.5px;
+    color: var(--accent-2);
+    background: rgba(126,232,184,0.1);
+    border: 1px solid rgba(126,232,184,0.3);
+    padding: 2px 8px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+  }
+  section.topic .level {
+    display: inline-block;
+    font-size: 10.5px;
+    text-transform: capitalize;
+    padding: 2px 8px;
+    border-radius: 999px;
+    margin-left: 8px;
+    margin-bottom: 14px;
+  }
+  section.topic .level-basic { color: var(--accent-2); background: rgba(126,232,184,0.1); border: 1px solid rgba(126,232,184,0.3); }
+  section.topic .level-intermediate { color: var(--accent); background: rgba(95,179,255,0.12); border: 1px solid rgba(95,179,255,0.35); }
+  section.topic .level-advanced { color: #d98a1f; background: rgba(217,138,31,0.12); border: 1px solid rgba(217,138,31,0.35); }
+
+  h3.block-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    margin: 20px 0 8px 0;
+  }
+  .theory ul { margin: 8px 0; padding-left: 20px; }
+  .theory li { margin-bottom: 6px; font-size: 14px; line-height: 1.55; color: var(--text); }
+  .theory p { font-size: 14px; line-height: 1.6; margin: 8px 0; }
+
+  pre.code-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    overflow-x: auto;
+    font-size: 12.5px;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .exercise-box {
+    border: 1px dashed var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    background: var(--panel-2);
+  }
+  .exercise-box .task {
+    font-size: 13.5px;
+    line-height: 1.55;
+    margin-bottom: 12px;
+  }
+  textarea.editor {
+    width: 100%;
+    min-height: 220px;
+    background: var(--code-bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 12.5px;
+    line-height: 1.55;
+    resize: vertical;
+    tab-size: 4;
+  }
+  .row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+  button {
+    font-family: inherit;
+    font-size: 13px;
+    border-radius: 7px;
+    border: 1px solid var(--border);
+    padding: 8px 14px;
+    cursor: pointer;
+    background: var(--panel);
+    color: var(--text);
+  }
+  button.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #0b0d13;
+    font-weight: 600;
+  }
+  button.primary:disabled { opacity: 0.6; cursor: wait; }
+  button:hover:not(:disabled) { filter: brightness(1.1); }
+  .hint-text {
+    font-size: 12.5px;
+    color: var(--muted);
+    margin-top: 8px;
+    display: none;
+  }
+  .hint-text.shown { display: block; }
+
+  .result {
+    margin-top: 14px;
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 13px;
+    display: none;
+  }
+  .result.shown { display: block; }
+  .result.pass { background: rgba(126,232,184,0.1); border: 1px solid var(--good); color: var(--good); }
+  .result.fail { background: rgba(255,107,107,0.08); border: 1px solid var(--bad); color: var(--bad); }
+  .result .headline { font-weight: 600; margin-bottom: 8px; }
+  .result pre {
+    background: var(--code-bg);
+    color: var(--text);
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 12px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .result .diff-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .result .diff-cols .lbl { font-size: 10.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    padding: 20px;
+  }
+
+  @media (max-width: 800px) {
+    nav { display: none; }
+    main { padding: 20px 16px 80px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="gateScreen" class="gate">
+  <div class="gate-card">
+    <h1>Robotics Interview Prep</h1>
+    <p class="sub">Pick a language, enter a candidate name, and how many questions to pull a randomized, reproducible question set.</p>
+    <label>Language
+      <select id="languageSelect">
+        <option value="cpp">C++</option>
+        <option value="python">Python</option>
+      </select>
+    </label>
+    <label>Candidate name
+      <input type="text" id="candidateName" placeholder="e.g. Jane Doe" />
+    </label>
+    <label># of questions
+      <input type="number" id="questionCount" min="1" value="10" />
+    </label>
+    <button class="primary" id="generateBtn">Generate question set</button>
+  </div>
+</div>
+
+<nav id="sidenav">
+  <h1 id="sidenavTitle">Robotics Interview Prep</h1>
+  <p class="sub">Theory + live compiler checks</p>
+  <div id="navlinks"></div>
+</nav>
+
+<main>
+  <header class="page">
+    <h1 id="mainTitle">Robotics Interview Prep</h1>
+    <p>
+      A working set of the concepts that come up most often in robotics engineering interviews.
+      Each topic has a short theory recap, a worked example, and an exercise where you fill in a
+      <code>TODO</code>, then run it for real and check the output.
+    </p>
+    <div class="note">
+      <strong>How checking works:</strong> "Compile &amp; Check" sends your code to a free public
+      compiler/interpreter service (<a href="https://wandbox.org" target="_blank" rel="noopener" style="color:var(--accent)">Wandbox</a>)
+      over the network and compares the program's actual stdout to the expected output. This
+      requires an internet connection · it is a real run, not a text match against your source code.
+    </div>
+
+    <div class="seed-info" id="seedInfo"></div>
+  </header>
+
+  <div id="topics"></div>
+
+  <footer>Practice file · runs entirely in your browser · compiles/runs via Wandbox's public API</footer>
+</main>
+
+<script src="questions_cpp.js"></script>
+<script src="questions_python.js"></script>
+<script>
+const ENDPOINT = "https://wandbox.org/api/compile.json";
+let activeBank = null;
+
+function escapeHtml(s) {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+function xmur3(str) {
+  let h = 1779033703 ^ str.length;
+  for (let i = 0; i < str.length; i++) {
+    h = Math.imul(h ^ str.charCodeAt(i), 3432918353);
+    h = (h << 13) | (h >>> 19);
+  }
+  return () => {
+    h = Math.imul(h ^ (h >>> 16), 2246822507);
+    h = Math.imul(h ^ (h >>> 13), 3266489909);
+    return (h ^= h >>> 16) >>> 0;
+  };
+}
+
+function mulberry32(seed) {
+  return () => {
+    seed |= 0;
+    seed = (seed + 0x6D2B79F5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function shuffled(array, rng) {
+  const a = array.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+const LEVEL_WEIGHTS = { basic: 0.3, intermediate: 0.3, advanced: 0.4 };
+const LEVEL_ORDER = ["basic", "intermediate", "advanced"];
+
+function weightedPick(bank, count, rng) {
+  const buckets = {};
+  for (const lvl of LEVEL_ORDER) {
+    buckets[lvl] = shuffled(bank.topics.filter((t) => t.level === lvl), rng);
+  }
+
+  const targets = {
+    basic: Math.round(count * LEVEL_WEIGHTS.basic),
+    intermediate: Math.round(count * LEVEL_WEIGHTS.intermediate),
+  };
+  targets.advanced = count - targets.basic - targets.intermediate;
+
+  const picked = { basic: [], intermediate: [], advanced: [] };
+  let shortfall = 0;
+  for (const lvl of LEVEL_ORDER) {
+    const want = Math.min(targets[lvl], buckets[lvl].length);
+    picked[lvl] = buckets[lvl].slice(0, want);
+    shortfall += targets[lvl] - want;
+  }
+
+  // Some level didn't have enough topics to hit its share: backfill from whichever
+  // level still has unused topics, preferring advanced, then intermediate, then basic.
+  if (shortfall > 0) {
+    for (const lvl of ["advanced", "intermediate", "basic"]) {
+      if (shortfall <= 0) break;
+      const already = picked[lvl].length;
+      const extra = buckets[lvl].slice(already, already + shortfall);
+      picked[lvl] = picked[lvl].concat(extra);
+      shortfall -= extra.length;
+    }
+  }
+
+  return [...picked.basic, ...picked.intermediate, ...picked.advanced];
+}
+
+function pickTopicsForName(name, count, bank) {
+  const seedFn = xmur3(name.trim().toLowerCase() || "default");
+  const seed = seedFn();
+  const rng = mulberry32(seed);
+  const n = Math.min(Math.max(count, 1), bank.topics.length);
+  return { list: weightedPick(bank, n, rng), seed };
+}
+
+function render(list) {
+  const navEl = document.getElementById("navlinks");
+  const topicsEl = document.getElementById("topics");
+  navEl.innerHTML = "";
+  topicsEl.innerHTML = "";
+
+  list.forEach((t, i) => {
+    const num = String(i + 1).padStart(2, "0");
+
+    const a = document.createElement("a");
+    a.href = "#" + t.id;
+    a.innerHTML = `<span class="n">${num}</span>${t.title}`;
+    navEl.appendChild(a);
+
+    const section = document.createElement("section");
+    section.className = "topic";
+    section.id = t.id;
+    section.innerHTML = `
+      <h2><span class="idx">${num}</span>${t.title}</h2>
+      <span class="tag">${t.tag}</span>
+      <span class="level level-${t.level}">${t.level}</span>
+
+      <h3 class="block-label">Theory</h3>
+      <div class="theory">${t.theory}</div>
+
+      <h3 class="block-label">Example</h3>
+      <pre class="code-block">${escapeHtml(t.example)}</pre>
+
+      <h3 class="block-label">Exercise</h3>
+      <div class="exercise-box">
+        <div class="task">${t.task}</div>
+        <textarea class="editor" id="editor-${i}" spellcheck="false">${escapeHtml(t.starter)}</textarea>
+        <div class="row">
+          <button class="primary" id="run-${i}">Compile &amp; Check</button>
+          <button id="hintbtn-${i}">Show hint</button>
+          <button id="resetbtn-${i}">Reset code</button>
+        </div>
+        <div class="hint-text" id="hint-${i}">${t.hint}</div>
+        <div class="result" id="result-${i}"></div>
+      </div>
+    `;
+    topicsEl.appendChild(section);
+  });
+
+  list.forEach((t, i) => {
+    document.getElementById(`hintbtn-${i}`).addEventListener("click", () => {
+      document.getElementById(`hint-${i}`).classList.toggle("shown");
+    });
+    document.getElementById(`resetbtn-${i}`).addEventListener("click", () => {
+      document.getElementById(`editor-${i}`).value = t.starter;
+      const r = document.getElementById(`result-${i}`);
+      r.classList.remove("shown", "pass", "fail");
+    });
+    document.getElementById(`run-${i}`).addEventListener("click", () => runCheck(t, i));
+  });
+}
+
+function generateForName() {
+  const lang = document.getElementById("languageSelect").value;
+  activeBank = TOPIC_BANKS[lang];
+  const name = document.getElementById("candidateName").value;
+  const count = parseInt(document.getElementById("questionCount").value, 10) || 10;
+  const { list, seed } = pickTopicsForName(name, count, activeBank);
+  render(list);
+
+  document.getElementById("sidenavTitle").textContent = `${activeBank.label} · Robotics Prep`;
+  document.getElementById("mainTitle").textContent = `${activeBank.label} for Robotics Interviews`;
+  document.title = `${activeBank.label} for Robotics Interviews`;
+
+  const info = document.getElementById("seedInfo");
+  info.textContent = name.trim()
+    ? `Showing ${list.length} of ${activeBank.topics.length} ${activeBank.label} questions, seeded from "${name.trim()}" (seed ${seed}). The same name always produces this same set.`
+    : `Showing ${list.length} of ${activeBank.topics.length} ${activeBank.label} questions (no name entered · enter one for a reproducible, candidate-specific set).`;
+  document.getElementById("gateScreen").style.display = "none";
+}
+
+function updateQuestionCountBounds() {
+  const lang = document.getElementById("languageSelect").value;
+  const bank = TOPIC_BANKS[lang];
+  const countInput = document.getElementById("questionCount");
+  countInput.max = bank.topics.length;
+  if (parseInt(countInput.value, 10) > bank.topics.length) {
+    countInput.value = bank.topics.length;
+  }
+}
+
+document.getElementById("generateBtn").addEventListener("click", generateForName);
+document.getElementById("languageSelect").addEventListener("change", updateQuestionCountBounds);
+document.getElementById("candidateName").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") generateForName();
+});
+document.getElementById("questionCount").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") generateForName();
+});
+updateQuestionCountBounds();
+
+async function runCheck(topic, i) {
+  const btn = document.getElementById(`run-${i}`);
+  const resultEl = document.getElementById(`result-${i}`);
+  const code = document.getElementById(`editor-${i}`).value;
+
+  btn.disabled = true;
+  btn.textContent = "Compiling...";
+  resultEl.className = "result shown";
+  resultEl.innerHTML = `<div class="headline" style="color:var(--muted)">Compiling and running on a real ${activeBank.label} instance…</div>`;
+
+  try {
+    const res = await fetch(ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        code: code,
+        compiler: activeBank.compiler,
+        options: topic.options
+      })
+    });
+
+    if (!res.ok) throw new Error(`Network error: HTTP ${res.status}`);
+    const data = await res.json();
+
+    const failed = data.status !== "0";
+    const actual = (data.program_output || "").trim();
+    const expected = topic.expected.trim();
+    const pass = !failed && actual === expected;
+
+    if (failed) {
+      // Compilation or runtime error path · C++ errors land in compiler_error/compiler_message,
+      // Python tracebacks (no separate compile step) land in program_error/program_message.
+      // A candidate's code can print output and then crash partway through, so show whatever
+      // ran before the failure alongside the error, rather than only when output is empty.
+      const errText = data.compiler_error || data.compiler_message || data.program_error || data.program_message || "Unknown error.";
+      resultEl.className = "result shown fail";
+      resultEl.innerHTML = `
+        <div class="headline">Did not compile / run cleanly</div>
+        ${actual ? `<div class="lbl" style="margin-top:10px;">Partial output before the error</div><pre>${escapeHtml(actual)}</pre>` : ""}
+        <pre>${escapeHtml(errText.slice(0, 4000))}</pre>
+      `;
+      return;
+    }
+
+    resultEl.className = "result shown " + (pass ? "pass" : "fail");
+    resultEl.innerHTML = `
+      <div class="headline">${pass ? "Passed · output matches" : "Not quite · output does not match"}</div>
+      <div class="diff-cols">
+        <div>
+          <div class="lbl">Expected</div>
+          <pre>${escapeHtml(expected)}</pre>
+        </div>
+        <div>
+          <div class="lbl">Actual</div>
+          <pre>${escapeHtml(actual || "(no output)")}</pre>
+        </div>
+      </div>
+      ${data.compiler_error ? `<div class="lbl" style="margin-top:10px;">Compiler warnings/errors</div><pre>${escapeHtml(data.compiler_error.slice(0, 3000))}</pre>` : ""}
+    `;
+  } catch (err) {
+    resultEl.className = "result shown fail";
+    resultEl.innerHTML = `
+      <div class="headline">Could not reach the compiler service</div>
+      <pre>${escapeHtml(String(err))}\n\nCheck your internet connection. This feature calls wandbox.org's public API from your browser.</pre>
+    `;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Compile & Check";
+  }
+}
+
+document.getElementById("candidateName").focus();
+</script>
+</body>
+</html>
