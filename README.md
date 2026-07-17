@@ -1,12 +1,12 @@
 # Interview Preparation
 
-A self-contained, static web tool for practicing (or running candidates through) C++ and Python questions aimed at robotics engineering interviews. No build step, no backend, no dependencies to install: it's plain HTML/CSS/JS that runs entirely in the browser.
+A self-contained, static web tool for practicing (or running candidates through) C++, Python and Linux/Bash questions aimed at robotics engineering interviews. No build step, no backend, no dependencies to install: it's plain HTML/CSS/JS that runs entirely in the browser.
 
 ## Live use
 
 Open `interview_prep.html` in a browser (locally, or via GitHub Pages once published). You'll see a start screen with three fields:
 
-- **Language**: C++ or Python
+- **Language**: C++, Python or Linux/Bash
 - **Candidate name**: used to seed which questions are picked
 - **# of questions**: how many to pull for this session
 
@@ -25,13 +25,14 @@ Every question is tagged `basic`, `intermediate`, or `advanced` (shown as a badg
 
 ## How answers are checked
 
-Clicking **Compile & Check** sends your code to [Wandbox](https://wandbox.org) (a free public compiler/interpreter service) over the network, runs it for real (GCC for C++, CPython for Python), and compares the actual stdout to the expected output byte-for-byte. It is a real run, not a text/pattern match against your source.
+Clicking **Compile & Check** sends your code to [Wandbox](https://wandbox.org) (a free public compiler/interpreter service) over the network, runs it for real (GCC for C++, CPython for Python, bash for Linux/Bash), and compares the actual stdout to the expected output byte-for-byte. It is a real run, not a text/pattern match against your source.
 
 Because of this:
 
 - **An internet connection is required** to check answers (the rest of the page works fully offline).
 - **Your code is sent to a third-party service.** Don't paste anything sensitive or proprietary into the editor.
 - Wandbox's Python sandbox has no third-party packages installed (no `numpy`, etc.) — the Python questions intentionally stick to the standard library for this reason.
+- The Linux/Bash questions run against Wandbox's `bash` sandbox, so exercises that need real files, processes, or piped input use setup commands within the script itself rather than an external filesystem.
 
 ## File structure
 
@@ -39,13 +40,14 @@ Because of this:
 interview_prep.html   the app: gate screen, rendering, seeding logic, and the compile/check flow
 questions_cpp.js      the C++ question bank (TOPIC_BANKS.cpp)
 questions_python.js   the Python question bank (TOPIC_BANKS.python)
+questions_linux.js    the Linux/Bash question bank (TOPIC_BANKS.linux)
 ```
 
-The two question-bank files just populate a global `TOPIC_BANKS` object; `interview_prep.html` loads both via `<script src>` and picks whichever bank matches the language dropdown. All three files need to be deployed together — the HTML file alone won't have any questions to show.
+The question-bank files just populate a global `TOPIC_BANKS` object; `interview_prep.html` loads all three via `<script src>` and picks whichever bank matches the language dropdown. All four files need to be deployed together — the HTML file alone won't have any questions to show.
 
 ## Adding new questions
 
-Each question is one object in the `topics` array inside `questions_cpp.js` or `questions_python.js`:
+Each question is one object in the `topics` array inside `questions_cpp.js`, `questions_python.js` or `questions_linux.js`:
 
 ```js
 {
@@ -59,7 +61,7 @@ Each question is one object in the `topics` array inside `questions_cpp.js` or `
   starter: `...code with a TODO...`,     // pre-filled into the editor
   expected: "exact stdout, trimmed",     // must match real compiler/interpreter output exactly
   hint: "the fix, as plain text",
-  options: "warning,gnu++17"             // compiler flags (C++ only; leave "" for Python)
+  options: "warning,gnu++17"             // compiler flags (C++ only; leave "" for Python and Linux/Bash)
 }
 ```
 
