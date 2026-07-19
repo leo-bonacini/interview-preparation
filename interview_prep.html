@@ -358,7 +358,7 @@
 
   <div id="topics"></div>
 
-  <footer>Practice file · runs entirely in your browser · compiles/runs via Wandbox's public API</footer>
+  <footer>Practice file · runs entirely in your browser · compiles/runs via Wandbox's public API · <span id="visitCount">visits: —</span></footer>
 </main>
 
 <script src="questions_cpp.js"></script>
@@ -367,6 +367,15 @@
 <script>
 const ENDPOINT = "https://wandbox.org/api/compile.json";
 let activeBank = null;
+
+fetch("https://abacus.jasoncameron.dev/hit/robotics-interview-prep-leobonacini/visits")
+  .then(r => r.json())
+  .then(data => {
+    document.getElementById("visitCount").textContent = `visits: ${data.value}`;
+  })
+  .catch(() => {
+    document.getElementById("visitCount").textContent = "visits: n/a";
+  });
 
 function escapeHtml(s) {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
